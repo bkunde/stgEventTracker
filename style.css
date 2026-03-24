@@ -1,0 +1,138 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    dark: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event-card {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.event-card:nth-child(1) { animation-delay: 0.05s; }
+.event-card:nth-child(2) { animation-delay: 0.1s; }
+.event-card:nth-child(3) { animation-delay: 0.15s; }
+.event-card:nth-child(4) { animation-delay: 0.2s; }
+.event-card:nth-child(5) { animation-delay: 0.25s; }
+.event-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Modal Animation */
+#eventModal.hidden, #detailsModal.hidden {
+    display: none;
+}
+
+#eventModal:not(.hidden), #detailsModal:not(.hidden) {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Category Colors */
+.category-music { background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); }
+.category-sports { background: linear-gradient(135deg, #f97316 0%, #ef4444 100%); }
+.category-art { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+.category-food { background: linear-gradient(135deg, #eab308 0%, #f97316 100%); }
+.category-tech { background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); }
+.category-community { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+
+/* Card Hover Effects */
+.event-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Button Interactions */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Image Loading Placeholder */
+.img-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Glassmorphism Enhancements */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dark .glass {
+    background: rgba(31, 41, 55, 0.7);
+    border: 1px solid rgba(75, 85, 99, 0.18);
+}
+
+/* Filter Button Active States */
+.filter-btn.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #6FAF4F;
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.date-btn.active {
+    position: relative;
+}
+
+.date-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    .hero-text {
+        font-size: 2rem;
+    }
+}

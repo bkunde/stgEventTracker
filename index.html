@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Events, Local Events, St. George">
+    <title>LocalEvents Tracker | Discover What's Happening Near You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50:  '#D5CAE0',
+                            100: '#E97580',
+                            500: '#FD1D1D',
+                            600: '#FC7535',
+                            700: '#FCB045',
+                            900: '#6FAF4F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-red-50 dark:bg-red-900 text-red-900 dark:text-red-100 transition-colors duration-300">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-red-800/80 backdrop-blur-md border-b border-red-200 dark:border-red-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="bg-primary-600 text-white p-2 rounded-lg">
+                        <i data-lucide="calendar-days" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-primary-500 to-orange-600 bg-clip-text text-transparent">
+                        LocalEvents
+                    </span>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                    <div class="relative w-full">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-red-400"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Search events, venues, or artists..."
+                            class="w-full pl-10 pr-4 py-2 rounded-full border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-700 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                        >
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                    <button onclick="openModal()" class="hidden sm:flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-full font-medium transition-all hover:scale-105 active:scale-95">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Add Event</span>
+                    </button>
+                    <button onclick="openModal()" class="sm:hidden p-2 bg-primary-600 text-white rounded-lg">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Search -->
+            <div class="md:hidden pb-4">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-red-400"></i>
+                    <input 
+                        type="text" 
+                        id="mobileSearchInput" 
+                        placeholder="Search events..."
+                        class="w-full pl-10 pr-4 py-2 rounded-full border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-primary-100 to-orange-700 text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Local Events</h1>
+            <p class="text-lg md:text-xl text-green-100 max-w-2xl mx-auto mb-8">
+                Track concerts, meetups, festivals, and more happening in your community. Never miss out on the fun!
+            </p>
+            
+            <!-- Category Pills -->
+            <div class="flex flex-wrap justify-center gap-3" id="categoryFilters">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all text-sm font-medium border border-white/30" data-category="all"> All Events
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="music">
+                    <i data-lucide="music" class="w-4 h-4 inline mr-1"></i> Music
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="sports">
+                    <i data-lucide="trophy" class="w-4 h-4 inline mr-1"></i> Sports
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="art">
+                    <i data-lucide="palette" class="w-4 h-4 inline mr-1"></i> Art & Culture
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="food">
+                    <i data-lucide="utensils" class="w-4 h-4 inline mr-1"></i> Food & Drink
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="tech">
+                    <i data-lucide="cpu" class="w-4 h-4 inline mr-1"></i> Tech
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all text-sm font-medium border border-white/20" data-category="community">
+                    <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Community
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Date Filter -->
+        <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+            <div class="flex gap-2 overflow-x-auto pb-2 sm:pb-0" id="dateFilters">
+                <button class="date-btn active px-4 py-2 rounded-lg bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium text-sm" data-date="all">All Time</button>
+                <button class="date-btn px-4 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-800 text-red-600 dark:text-red-400 font-medium text-sm transition-colors" data-date="today">Today</button>
+                <button class="date-btn px-4 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-800 text-red-600 dark:text-red-400 font-medium text-sm transition-colors" data-date="week">This Week</button>
+                <button class="date-btn px-4 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-800 text-red-600 dark:text-red-400 font-medium text-sm transition-colors" data-date="month">This Month</button>
+            </div>
+        </div>
+
+        <!-- Events Grid -->
+        <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Events will be injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20">
+            <div class="bg-red-100 dark:bg-red-800 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="calendar-x" class="w-12 h-12 text-red-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-red-900 dark:text-red-100 mb-2">No events found</h3>
+            <p class="text-red-600 dark:text-red-400 mb-4">Try adjusting your filters or add a new event!</p>
+            <button onclick="openModal()" class="text-primary-600 hover:text-primary-700 font-medium">Add your first event →</button>
+        </div>
+    </main>
+
+    <!-- Add/Edit Event Modal -->
+    <div id="eventModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-red-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all scale-100 overflow-hidden overflow-y-auto">
+                <div class="p-6 border-b border-red-200 dark:border-red-700 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-red-900 dark:text-red-100" id="modalTitle">Add New Event</h2>
+                    <button onclick="closeModal()" class="p-2 hover:bg-red-100 dark:hover:bg-red-700 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <form id="eventForm" class="p-6 space-y-4">
+                    <input type="hidden" id="eventId">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Event Title</label>
+                        <input type="text" id="eventTitle" required class="w-full px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" placeholder="e.g., Summer Music Festival">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Date</label>
+                            <input type="date" id="eventDate" required class="w-full px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Time</label>
+                            <input type="time" id="eventTime" required class="w-full px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Location</label>
+                        <div class="relative">
+                            <i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400"></i>
+                            <input type="text" id="eventLocation" required class="w-full pl-10 pr-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Venue or Address">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Category</label>
+                        <select id="eventCategory" required class="w-full px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 outline-none">
+                            <option value="music">Music</option>
+                            <option value="sports">Sports</option>
+                            <option value="art">Art & Culture</option>
+                            <option value="food">Food & Drink</option>
+                            <option value="tech">Technology</option>
+                            <option value="tech">Community</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-red-700 dark:text-red-300 mb-1">Description</label>
+                        <textarea id="eventDescription" rows="3" class="w-full px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 bg-white dark:bg-red-700 focus:ring-2 focus:ring-primary-500 outline-none resize-none" placeholder="What's happening at this event?"></textarea>
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" onclick="closeModal()" class="flex-1 px-4 py-2 rounded-lg border border-red-300 dark:border-red-600 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-700 transition-colors font-medium">Cancel</button>
+                        <button type="submit" class="flex-1 px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors shadow-lg shadow-primary-600/30">Save Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeDetailsModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white dark:bg-red-800 rounded-2xl shadow-2xl w-full max-w-2xl pointer-events-auto overflow-hidden max-h-[90vh] overflow-y-auto">
+                <div id="detailsContent" class="p-0">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
